@@ -1,0 +1,14 @@
+# ===================================
+# Filter Scope Definitions
+# ===================================
+
+scopes:
+
+    status:
+        label: Status
+        type: group
+        conditions: status in (:filtered)
+        options:
+            open: Open
+            filled: Filled
+            shipped: Shipped

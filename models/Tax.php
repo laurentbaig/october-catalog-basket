@@ -3,16 +3,16 @@
 use Model;
 
 /**
- * BasketItem Model
+ * Tax Model
  */
-class BasketItem extends Model
+class Tax extends Model
 {
     use \October\Rain\Database\Traits\Validation;
 
     /**
      * @var string The database table used by the model.
      */
-    public $table = 'lbaig_basket_basket_items';
+    public $table = 'lbaig_basket_taxes';
 
     /**
      * @var array Guarded fields
@@ -22,11 +22,7 @@ class BasketItem extends Model
     /**
      * @var array Fillable fields
      */
-    protected $fillable = [
-        'basket_id',
-        'product_id',
-        'quantity'
-    ];
+    protected $fillable = [];
 
     /**
      * @var array Validation rules for attributes
@@ -66,27 +62,11 @@ class BasketItem extends Model
      */
     public $hasOne = [];
     public $hasMany = [];
-    public $belongsTo = [
-        'basket' => 'Lbaig\Basket\Models\Basket',
-        'product' => 'Lbaig\Catalog\Models\Product'
-    ];
-    public $belongsToMany = [
-        'propertyOptions' => ['Lbaig\Catalog\Models\PropertyOption',
-                              'table' => 'basket_item_property_option']
-    ];
+    public $belongsTo = [];
+    public $belongsToMany = [];
     public $morphTo = [];
     public $morphOne = [];
     public $morphMany = [];
     public $attachOne = [];
     public $attachMany = [];
-
-
-    public function getProductPriceAttribute()
-    {
-        $price = $this->product->price;
-        foreach ($this->propertyOptions as $option) {
-            $price += $option->price;
-        }
-        return $price;
-    }
 }

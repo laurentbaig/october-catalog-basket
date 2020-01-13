@@ -3,16 +3,16 @@
 use Model;
 
 /**
- * BasketItem Model
+ * Address Model
  */
-class BasketItem extends Model
+class Address extends Model
 {
     use \October\Rain\Database\Traits\Validation;
 
     /**
      * @var string The database table used by the model.
      */
-    public $table = 'lbaig_basket_basket_items';
+    public $table = 'lbaig_basket_addresses';
 
     /**
      * @var array Guarded fields
@@ -23,9 +23,14 @@ class BasketItem extends Model
      * @var array Fillable fields
      */
     protected $fillable = [
-        'basket_id',
-        'product_id',
-        'quantity'
+        'addressee',
+        'company',
+        'street',
+        'district',
+        'city',
+        'state',
+        'postcode',
+        'country'
     ];
 
     /**
@@ -66,27 +71,11 @@ class BasketItem extends Model
      */
     public $hasOne = [];
     public $hasMany = [];
-    public $belongsTo = [
-        'basket' => 'Lbaig\Basket\Models\Basket',
-        'product' => 'Lbaig\Catalog\Models\Product'
-    ];
-    public $belongsToMany = [
-        'propertyOptions' => ['Lbaig\Catalog\Models\PropertyOption',
-                              'table' => 'basket_item_property_option']
-    ];
+    public $belongsTo = [];
+    public $belongsToMany = [];
     public $morphTo = [];
     public $morphOne = [];
     public $morphMany = [];
     public $attachOne = [];
     public $attachMany = [];
-
-
-    public function getProductPriceAttribute()
-    {
-        $price = $this->product->price;
-        foreach ($this->propertyOptions as $option) {
-            $price += $option->price;
-        }
-        return $price;
-    }
 }

@@ -1,0 +1,56 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    id:
+        label: ID
+        disabled: true
+        span: left
+    status:
+        label: Status
+        type: dropdown
+        span: right
+        options:
+            open: Open
+            filled: Filled
+            shipped: Shipped
+    email:
+        label: Email
+        type: text
+        readOnly: true
+        span: left
+    phone:
+        label: Phone
+        type: text
+        readOnly: true
+        span: right
+    subtotal:
+        label: Subtotal
+        type: number
+        format: $%.2f
+        readOnly: true
+        span: left
+    tax:
+        label: Tax
+        type: number
+        format: $%.2f
+        readOnly: true
+        span: right
+    total:
+        label: Total
+        type: number
+        format: $%.2f
+        readOnly: true
+        span: left
+    shipping:
+        label: Shipping
+        type: number
+        format: $%.2f
+        readOnly: true
+        span: right
+    items:
+        label: Items
+        type: partial
+        path: $/lbaig/basket/models/order/_items.htm
+        

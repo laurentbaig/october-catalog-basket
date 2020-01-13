@@ -65,6 +65,7 @@ class Plugin extends PluginBase
     {
         return [
             'Lbaig\Basket\Components\Basket' => 'Basket',
+            'Lbaig\Basket\Components\Order' => 'Order',
         ];
     }
 
@@ -92,15 +93,13 @@ class Plugin extends PluginBase
      */
     public function registerNavigation()
     {
-        return []; // Remove this line to activate
-
         return [
             'basket' => [
-                'label'       => 'Basket',
-                'url'         => Backend::url('lbaig/basket/mycontroller'),
+                'label'       => 'Orders',
+                'url'         => Backend::url('lbaig/basket/orders'),
                 'icon'        => 'icon-leaf',
                 'permissions' => ['lbaig.basket.*'],
-                'order'       => 500,
+                'order'       => 501,
             ],
         ];
     }

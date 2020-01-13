@@ -1,0 +1,27 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    id:
+        label: ID
+        searchable: true
+    status:
+        label: Status
+        type: text
+    email:
+        label: Email
+        type: text
+    phone:
+        label: Phone
+        type: text
+    totalItems:
+        label: Total Units
+        type: number
+    total:
+        label: Total
+        type: number
+        format: $%.2f
+    created_at:
+        label: Created
+        type: Date

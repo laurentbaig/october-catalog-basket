@@ -12,6 +12,7 @@ class CreateBasketItemsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('basket_id')->unsigned()->nullable();
+            $table->integer('order_id')->unsigned()->nullable();
             $table->integer('product_id')->unsigned();
             $table->integer('quantity');
             $table->timestamps();

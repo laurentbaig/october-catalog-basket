@@ -2,3 +2,7 @@
   - First version of Basket
   - create_baskets_table.php
   - create_basket_items_table.php
+  - create_addresses_table.php
+  - create_taxes_table.php
+  - create_shippings_table.php
+  - create_orders_table.php

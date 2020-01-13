@@ -22,16 +22,6 @@ class Basket extends ComponentBase
         return [];
     }
 
-    public function exists()
-    {
-        $sessionId = Session::getId();
-        $basket = BasketModel::where('session_id', $sessionId)->first();
-        if ($basket) {
-            return true;
-        }
-        return false;
-    }
-
     public function get()
     {
         $basket = BasketModel::where('session_id', Session::getId())->first();
@@ -69,11 +59,14 @@ class Basket extends ComponentBase
 
     public function getItemPriceWithOptions(BasketItem $item)
     {
+        /*
         $price = $item->product->price;
         foreach ($item->propertyOptions as $option) {
             $price += $option->price;
         }
         return $price;
+        */
+        return $item->productPrice;
     }
     
     public function onAdd()
@@ -83,6 +76,7 @@ class Basket extends ComponentBase
         // TODO: Add search for user basket
         $basket = BasketModel::where('session_id', Session::getId())->first();
         if (!$basket) {
+            \Log::info('Create new basket');
             // create the basket for the session
             $basket = BasketModel::create([
                 'session_id' => Session::getId()

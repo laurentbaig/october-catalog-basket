@@ -3,16 +3,16 @@
 use Model;
 
 /**
- * BasketItem Model
+ * Order Model
  */
-class BasketItem extends Model
+class Order extends Model
 {
     use \October\Rain\Database\Traits\Validation;
 
     /**
      * @var string The database table used by the model.
      */
-    public $table = 'lbaig_basket_basket_items';
+    public $table = 'lbaig_basket_orders';
 
     /**
      * @var array Guarded fields
@@ -23,9 +23,10 @@ class BasketItem extends Model
      * @var array Fillable fields
      */
     protected $fillable = [
-        'basket_id',
-        'product_id',
-        'quantity'
+        'address_id',
+        'payment_id',
+        'email',
+        'phone'
     ];
 
     /**
@@ -65,15 +66,11 @@ class BasketItem extends Model
      * @var array Relations
      */
     public $hasOne = [];
-    public $hasMany = [];
-    public $belongsTo = [
-        'basket' => 'Lbaig\Basket\Models\Basket',
-        'product' => 'Lbaig\Catalog\Models\Product'
+    public $hasMany = [
+        'items' => 'Lbaig\Basket\Models\BasketItem'
     ];
-    public $belongsToMany = [
-        'propertyOptions' => ['Lbaig\Catalog\Models\PropertyOption',
-                              'table' => 'basket_item_property_option']
-    ];
+    public $belongsTo = [];
+    public $belongsToMany = [];
     public $morphTo = [];
     public $morphOne = [];
     public $morphMany = [];
@@ -81,12 +78,12 @@ class BasketItem extends Model
     public $attachMany = [];
 
 
-    public function getProductPriceAttribute()
+    public function getTotalItemsAttribute()
     {
-        $price = $this->product->price;
-        foreach ($this->propertyOptions as $option) {
-            $price += $option->price;
+        $qty = 0;
+        foreach ($this->items as $item) {
+            $qty += $item->quantity;
         }
-        return $price;
+        return $qty;
     }
 }
