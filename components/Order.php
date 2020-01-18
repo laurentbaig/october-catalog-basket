@@ -57,5 +57,20 @@ class Order extends ComponentBase
                       $order->tax +
                       $order->shipping;
         $order->save();
+
+        // send confirmation of order email
+        $vars = [
+            'order' => $order,
+            'shipping_address' => $shipping_address
+        ];
+
+        Mail::send('order::mail.thank-you', $vars, function ($message) {
+            $message->to($order['email']);
+            $message->subject('Thank you for your order');
+        });
+
+        return [
+            'status' => 'ok'
+        ];
     }
 }
