@@ -76,8 +76,6 @@ class Plugin extends PluginBase
      */
     public function registerPermissions()
     {
-        return []; // Remove this line to activate
-
         return [
             'lbaig.basket.some_permission' => [
                 'tab' => 'Basket',
