@@ -1,7 +1,7 @@
 <table class="table">
     <thead>
 	<tr>
-	    <th>Id</th>
+	    <th>Product Id</th>
 	    <th>Product</th>
 	    <th>Options</th>
 	    <th>Quantity</th>
@@ -10,7 +10,7 @@
     <tbody>
     <?php foreach($model->items as $item): ?>
     <tr>
-	<td><?= $item->id; ?></td>
+	<td><?= $item->product_id; ?></td>
 	<td><?= $item->product->name; ?></td>
 	<td>
 	    <?php foreach ($item->propertyOptions as $option): ?>

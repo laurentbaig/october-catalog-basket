@@ -64,13 +64,10 @@ class Order extends ComponentBase
             'shipping_address' => $shipping_address
         ];
 
-        Mail::send('order::mail.thank-you', $vars, function ($message) {
+        Mail::send('order::mail.thank-you', $vars, function ($message) use ($order) {
             $message->to($order['email']);
             $message->subject('Thank you for your order');
         });
 
-        return [
-            'status' => 'ok'
-        ];
     }
 }
