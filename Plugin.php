@@ -41,18 +41,18 @@ class Plugin extends PluginBase
     public function boot()
     {
         /*
-        Event::listen('backend.menu.extendItems', function($manager)
-        {
-            $manager->addSideMenuItems('Lbaig.Catalog', 'catalog', [
-                'comments' => [
-                    'label'       => 'Comment',
-                    'icon'        => 'icon-comments',
-                    'code'        => 'comments',
-                    'owner'       => 'RainLab.Blog',
-                    'url'         => Backend::url('lbaig/basket/section')
-                ],
-            ]);
-        });
+          Event::listen('backend.menu.extendItems', function($manager)
+          {
+          $manager->addSideMenuItems('Lbaig.Catalog', 'catalog', [
+          'comments' => [
+          'label'       => 'Comment',
+          'icon'        => 'icon-comments',
+          'code'        => 'comments',
+          'owner'       => 'RainLab.Blog',
+          'url'         => Backend::url('lbaig/basket/section')
+          ],
+          ]);
+          });
         */
     }
 
@@ -98,6 +98,19 @@ class Plugin extends PluginBase
                 'icon'        => 'icon-leaf',
                 'permissions' => ['lbaig.basket.*'],
                 'order'       => 501,
+            ],
+        ];
+    }
+
+    public function registerReportWidgets()
+    {
+        return [
+            'Lbaig\Basket\ReportWidgets\OrdersSummary' => [
+                'label'   => 'Orders Summary',
+                'context' => 'dashboard',
+                'permissions' => [
+                    'lbaig.basket.*',
+                ],
             ],
         ];
     }
