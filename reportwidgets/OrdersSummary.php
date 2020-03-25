@@ -56,6 +56,20 @@ class OrdersSummary extends ReportWidgetBase
                                   ->sum('total');
         $this->vars['rangeText'] = $this->getRangeOptions()[$range];
         
+        $categories = [];
+        $orders = Order::where('created_at', '>', $since)
+                ->where('created_at', '<=', $until)
+                ->get();
+        foreach ($orders as $order) {
+            foreach ($order->items as $item) {
+                if (!array_key_exists($item->product->category->name, $categories)) {
+                    $categories[$item->product->category->name] = 0.0;
+                }
+                $categories[$item->product->category->name] += $item->quantity * $item->productPrice;
+            }
+        }
+        $this->vars['categories'] = $categories;
+        
         return $this->makePartial('widget');
     }
 

@@ -15,18 +15,28 @@
     -->
 
     <div>
-    <?= $rangeText ?>: $<?= $orderTotal ?>
+	<?= $rangeText ?>: $<?= $orderTotal ?>
     </div>
     <!--
-    <div
-        class="control-chart"
-        data-control="chart-pie"
-        data-size="200"
-        data-center-text="180">
-        <ul>
-            <li>Direct <span>1000</span></li>
-            <li>Social networks <span>800</span></li>
-        </ul>
-    </div>
+	 <div
+         class="control-chart"
+         data-control="chart-pie"
+         data-size="200"
+         data-center-text="180">
+         <ul>
+         <li>Direct <span>1000</span></li>
+         <li>Social networks <span>800</span></li>
+         </ul>
+	 </div>
     -->
+    <div class="control-chart wrap-legend"
+		data-control="chart-bar"
+		data-height="100"
+		data-full-width="1">
+	<ul>
+	    <?php foreach ($categories as $cat => $val): ?>
+            <li><?= $cat ?><span><?= $val ?></span></li>
+	    <?php endforeach; ?>
+	</ul>
+    </div>
 </div>
