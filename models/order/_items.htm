@@ -19,7 +19,7 @@
 	    <?php endforeach; ?>
 	</td>
 	<td><?= $item->quantity ?></td>
-	<td><?= $item->productPrice ?></td>
+	<td>$<?= number_format($item->productPrice, 2) ?></td>
     </tr>
     <?php endforeach; ?>
     </tbody>
