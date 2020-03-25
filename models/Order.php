@@ -65,11 +65,14 @@ class Order extends Model
     /**
      * @var array Relations
      */
-    public $hasOne = [];
+    public $hasOne = [
+    ];
     public $hasMany = [
         'items' => 'Lbaig\Basket\Models\BasketItem'
     ];
-    public $belongsTo = [];
+    public $belongsTo = [
+        'address' => 'Lbaig\Basket\Models\Address'
+    ];
     public $belongsToMany = [];
     public $morphTo = [];
     public $morphOne = [];
