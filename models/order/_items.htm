@@ -5,6 +5,7 @@
 	    <th>Product</th>
 	    <th>Options</th>
 	    <th>Quantity</th>
+	    <th>Amount</th>
 	</tr>
     </thead>
     <tbody>
@@ -18,6 +19,7 @@
 	    <?php endforeach; ?>
 	</td>
 	<td><?= $item->quantity ?></td>
+	<td><?= $item->productPrice ?></td>
     </tr>
     <?php endforeach; ?>
     </tbody>
