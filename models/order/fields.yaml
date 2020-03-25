@@ -57,7 +57,7 @@ tabs:
             path: $/lbaig/basket/models/order/_items.htm
             tab: Items
         address:
-            label: Address
+            label: Shipping Address
             type: partial
             path: $/lbaig/basket/models/order/_address.htm
             tab: Address
