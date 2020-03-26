@@ -74,6 +74,7 @@ class OrdersSummary extends ReportWidgetBase
             }
         }
         $this->vars['categories'] = $categories;
+        $this->vars['ordersCount'] = $orders->count();
         $this->vars['orderTotal'] = $orderTotal;
         
         return $this->makePartial('widget');
