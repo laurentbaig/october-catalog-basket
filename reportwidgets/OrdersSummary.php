@@ -51,12 +51,15 @@ class OrdersSummary extends ReportWidgetBase
             $until->startOfYear()->subYears(1)->endOfYear();
         }
         
+        /*
         $this->vars['orderTotal'] = Order::where('created_at', '>', $since)
                                   ->where('created_at', '<=', $until)
                                   ->sum('total');
+        */
         $this->vars['rangeText'] = $this->getRangeOptions()[$range];
         
         $categories = [];
+        $orderTotal = 0;
         $orders = Order::where('created_at', '>', $since)
                 ->where('created_at', '<=', $until)
                 ->get();
@@ -65,10 +68,13 @@ class OrdersSummary extends ReportWidgetBase
                 if (!array_key_exists($item->product->category->name, $categories)) {
                     $categories[$item->product->category->name] = 0.0;
                 }
-                $categories[$item->product->category->name] += $item->quantity * $item->productPrice;
+                $lineAmount = $item->quantity * $item->productPrice;
+                $categories[$item->product->category->name] += $lineAmount;
+                $orderTotal += $lineAmount;
             }
         }
         $this->vars['categories'] = $categories;
+        $this->vars['orderTotal'] = $orderTotal;
         
         return $this->makePartial('widget');
     }

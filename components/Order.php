@@ -46,7 +46,7 @@ class Order extends ComponentBase
             $item->order_id = $order->id;
             $item->basket_id = null;
             $item->save();
-            $subtotal = $item->quantity * $item->productPrice;
+            $subtotal += $item->quantity * $item->productPrice;
         }
 
         $order->subtotal = $subtotal;
