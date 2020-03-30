@@ -49,17 +49,13 @@ fields:
         format: $%.2f
         readOnly: true
         span: right
-tabs:
-    fields:
-        items:
-            label: Items
-            type: partial
-            path: $/lbaig/basket/models/order/_items.htm
-            tab: Items
-        address:
-            label: Shipping Address
-            type: partial
-            path: $/lbaig/basket/models/order/_address.htm
-            tab: Address
+    address:
+        label: Shipping Address
+        type: partial
+        path: $/lbaig/basket/models/order/_address.htm
+    items:
+        label: Items
+        type: partial
+        path: $/lbaig/basket/models/order/_items.htm
         
         
