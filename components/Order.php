@@ -59,14 +59,34 @@ class Order extends ComponentBase
         $order->save();
 
         // send confirmation of order email
+        /*
         $vars = [
             'order' => $order,
             'shipping_address' => $shipping_address
         ];
+        */
+        $vars = [
+            'name' => $order->address->addressee,
+            'order' => $order,
+            'items' => []
+        ];
+    
+        $total = 0.0;
+        foreach ($order->items as $item) {
+            $detail = [
+                'name' => $item->product->name,
+                'options' => $item->propertyOptions,
+                'quantity' => $item->quantity,
+                'unit_price' => number_format($item->productPrice, 2),
+                'line_price' => number_format($item->quantity * $item->productPrice, 2)
+            ];
+            $vars['items'][] = $detail;
+            $total = $total + $detail['line_price'];
+        }
+        $vars['total'] = number_format($total, 2);
 
-        Mail::send('order::mail.thank-you', $vars, function ($message) use ($order) {
-            $message->to($order['email']);
-            $message->subject('Thank you for your order');
+        Mail::send('order::mail.thank-you', $vars, function ($msg) {
+            $msg->to('ljb0904@gmail.com');
         });
 
     }

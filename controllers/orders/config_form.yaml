@@ -16,13 +16,13 @@ defaultRedirect: lbaig/basket/orders
 
 # Create page
 create:
-    title: Create Order
+    title: View Order
     redirect: lbaig/basket/orders/update/:id
     redirectClose: lbaig/basket/orders
 
 # Update page
 update:
-    title: Edit Order
+    title: View Order
     redirect: lbaig/basket/orders
     redirectClose: lbaig/basket/orders
 

@@ -46,7 +46,9 @@ class BasketItem extends Model
     /**
      * @var array Attributes to be appended to the API representation of the model (ex. toArray())
      */
-    protected $appends = [];
+    protected $appends = [
+        'productPrice'
+    ];
 
     /**
      * @var array Attributes to be removed from the API representation of the model (ex. toArray())
