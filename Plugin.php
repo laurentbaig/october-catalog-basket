@@ -1,6 +1,8 @@
 <?php namespace Lbaig\Basket;
 
 use Backend;
+use Event;
+use Lbaig\Catalog\Models\Product;
 use System\Classes\PluginBase;
 
 /**
@@ -40,20 +42,26 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
-        /*
-          Event::listen('backend.menu.extendItems', function($manager)
-          {
-          $manager->addSideMenuItems('Lbaig.Catalog', 'catalog', [
-          'comments' => [
-          'label'       => 'Comment',
-          'icon'        => 'icon-comments',
-          'code'        => 'comments',
-          'owner'       => 'RainLab.Blog',
-          'url'         => Backend::url('lbaig/basket/section')
-          ],
-          ]);
-          });
-        */
+        // add the basket item relation to produts
+        Product::extend(function ($model) {
+            $model->hasMany['basketItems'] = 'Lbaig\Basket\Models\BasketItem';
+        });
+
+        // extend product list to include # of orders it has
+        Event::listen('backend.list.extendColumns', function ($widget) {
+            if (! $widget->model instanceof Product) {
+                return;
+            }
+
+            $widget->addColumns([
+                'orders_count' => [
+                    'label' => 'Orders (Baskets)',
+                    'type' => 'partial',
+                    'path' => '~/plugins/lbaig/basket/partials/_orders_count.htm',
+                    'align' => 'right'
+                ],
+            ]);
+        });
     }
 
     /**

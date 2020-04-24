@@ -1,0 +1,1 @@
+<?= $record->basketItems()->whereNotNull('order_id')->count() ?> (<?= $record->basketItems()->whereNull('order_id')->count() ?>)

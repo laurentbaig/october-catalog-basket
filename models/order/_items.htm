@@ -1,32 +1,41 @@
 <table class="table">
-    <thead>
-	<tr>
-	    <th>Product Id</th>
-	    <th>Photo</th>
-	    <th>Product</th>
-	    <th>Options</th>
-	    <th>Quantity</th>
-	    <th>Amount</th>
-	</tr>
-    </thead>
-    <tbody>
-    <?php foreach($model->items as $item): ?>
-    <tr>
-	<td><?= $item->product_id; ?></td>
-	<td class="image-cell">
-	    <?php if ($item->product->preview_image): ?>
-	    <img src="<?= $item->product->preview_image->getThumb(160,160) ?>">
-	    <?php endif; ?>
-	</td>
-	<td><?= $item->product->name; ?></td>
-	<td>
-	    <?php foreach ($item->propertyOptions as $option): ?>
-	    <?= $option->name; ?>,
-	    <?php endforeach; ?>
-	</td>
-	<td><?= $item->quantity ?></td>
-	<td>$<?= number_format($item->productPrice, 2) ?></td>
-    </tr>
-    <?php endforeach; ?>
-    </tbody>
+	<thead>
+		<tr>
+			<th>Product Id</th>
+			<th>Photo</th>
+			<th>Product</th>
+			<th>Options</th>
+			<th>Quantity</th>
+			<th>Amount</th>
+			<th>Line Price</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach($model->items as $item): ?>
+		<tr>
+			<td><?= $item->product_id; ?></td>
+			<td class="image-cell">
+				<?php if ($item->product->preview_image): ?>
+				<img src="<?= $item->product->preview_image->getThumb(160,160) ?>">
+				<?php endif; ?>
+			</td>
+			<td>
+				<a href="/backend/lbaig/catalog/products/update/<?= $item->product->id ?>">
+					<?= $item->product->name; ?>
+				</a>
+
+			</td>
+			<td>
+				<?php foreach ($item->propertyOptions as $option): ?>
+				<?= $option->name; ?>,
+				<?php endforeach; ?>
+			</td>
+			<td><?= $item->quantity ?></td>
+			<td>$<?= number_format($item->productPrice, 2) ?></td>
+			<td>
+				<?= number_format($item->quantity * $item->productPrice, 2) ?>
+			</td>
+		</tr>
+		<?php endforeach; ?>
+	</tbody>
 </table>
