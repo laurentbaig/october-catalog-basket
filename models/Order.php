@@ -26,7 +26,11 @@ class Order extends Model
         'address_id',
         'payment_id',
         'email',
-        'phone'
+        'phone',
+        'shipping',
+        'subtotal',
+        'tax',
+        'total'
     ];
 
     /**

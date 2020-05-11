@@ -85,9 +85,9 @@ class Plugin extends PluginBase
     public function registerPermissions()
     {
         return [
-            'lbaig.basket.some_permission' => [
+            'lbaig.basket.access_settings' => [
                 'tab' => 'Basket',
-                'label' => 'Some permission'
+                'label' => 'Change settings'
             ],
         ];
     }
@@ -120,6 +120,22 @@ class Plugin extends PluginBase
                     'lbaig.basket.*',
                 ],
             ],
+        ];
+    }
+
+    public function registerSettings()
+    {
+        return [
+            'basket' => [
+                'label'       => 'Basket Settings',
+                'description' => 'Manage basket settings.',
+                'category'    => 'Basket',
+                'icon'        => 'icon-cog',
+                'class'       => 'Lbaig\Basket\Models\Settings',
+                'order'       => 500,
+                'keywords'    => 'security location',
+                'permissions' => ['lbaig.basket.access_settings']
+            ]
         ];
     }
 }

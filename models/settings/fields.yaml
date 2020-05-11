@@ -1,0 +1,17 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    is_tax_origin_based:
+        label: Use origin based tax
+        type: switch
+    origin_based_tax:
+        label: % rate for origin based tax
+        type: number
+        min: 0
+        max: 100
+        trigger:
+            action: show
+            field: is_tax_origin_based
+            condition: checked

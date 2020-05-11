@@ -27,6 +27,7 @@ class Order extends ComponentBase
     {
         \Log::info(Input::all());
         
+        /*
         $order = Input::get('order');
         $shipping_address = $order['shipping_address'];
 
@@ -59,12 +60,6 @@ class Order extends ComponentBase
         $order->save();
 
         // send confirmation of order email
-        /*
-        $vars = [
-            'order' => $order,
-            'shipping_address' => $shipping_address
-        ];
-        */
         $vars = [
             'name' => $order->address->addressee,
             'order' => $order,
@@ -88,6 +83,7 @@ class Order extends ComponentBase
         Mail::send('order::mail.thank-you', $vars, function ($msg) {
             $msg->to('ljb0904@gmail.com');
         });
+        */
 
     }
 }

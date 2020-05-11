@@ -3,6 +3,7 @@
 use Cms\Classes\ComponentBase;
 use Lbaig\Basket\Models\Basket as BasketModel;
 use Lbaig\Basket\Models\BasketItem;
+use Lbaig\Basket\Models\Settings;
 use Input;
 use Session;
 
@@ -45,6 +46,7 @@ class Basket extends ComponentBase
 
     public function getBasketSubtotal()
     {
+        \Log::info('getBasketSubtotal');
         $subtotal = 0;
         $basket = BasketModel::where('session_id', Session::getId())->first();
         if (!$basket) {
@@ -57,6 +59,29 @@ class Basket extends ComponentBase
         return $subtotal;
     }
 
+    public function getTaxable()
+    {
+        \Log::info('getTaxable');
+        $taxable = 0;
+        $basket = BasketModel::where('session_id', Session::getId())->first();
+        if (!$basket) {
+            return $taxable;
+        }
+
+        foreach ($basket->items as $item) {
+            \Log::info($item->product);
+            if ($item->product->taxable) {
+                $taxable += $item->quantity * $this->getItemPriceWithOptions($item);
+            }
+        }
+
+        $tax_amount = 0.0;
+        if (Settings::get('is_tax_origin_based')) {
+            $tax_amount = floor(Settings::get('origin_based_tax') * $taxable) / 100;
+        }
+        return $tax_amount;
+    }
+    
     public function getItemPriceWithOptions(BasketItem $item)
     {
         /*
