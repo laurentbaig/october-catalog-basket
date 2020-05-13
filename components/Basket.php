@@ -156,7 +156,9 @@ class Basket extends ComponentBase
 
         foreach ($basket_items as $basket_item_id) {
             $item = BasketItem::find($basket_item_id);
-            $item->delete();
+            if ($item) {
+                $item->delete();
+            }
         }
     }
 }
