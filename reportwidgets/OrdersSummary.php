@@ -68,7 +68,7 @@ class OrdersSummary extends ReportWidgetBase
                 if (!array_key_exists($item->product->category->name, $categories)) {
                     $categories[$item->product->category->name] = 0.0;
                 }
-                $lineAmount = $item->quantity * $item->productPrice;
+                $lineAmount = $item->quantity * $item->line_price;
                 $categories[$item->product->category->name] += $lineAmount;
                 $orderTotal += $lineAmount;
             }
