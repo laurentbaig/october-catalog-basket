@@ -31,9 +31,9 @@
 				<?php endforeach; ?>
 			</td>
 			<td><?= $item->quantity ?></td>
-			<td>$<?= number_format($item->productPrice, 2) ?></td>
+			<td>$<?= number_format($item->line_price, 2) ?></td>
 			<td>
-				<?= number_format($item->quantity * $item->productPrice, 2) ?>
+				<?= number_format($item->quantity * $item->line_price, 2) ?>
 			</td>
 		</tr>
 		<?php endforeach; ?>

@@ -6,3 +6,6 @@
   - create_taxes_table.php
   - create_shippings_table.php
   - create_orders_table.php
+1.0.2:
+  - Add line item price to store price at time of purchase
+  - update_basket_items_add_line_price.php
