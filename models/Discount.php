@@ -3,16 +3,16 @@
 use Model;
 
 /**
- * BasketItem Model
+ * Discount Model
  */
-class BasketItem extends Model
+class Discount extends Model
 {
     use \October\Rain\Database\Traits\Validation;
 
     /**
      * @var string The database table used by the model.
      */
-    public $table = 'lbaig_basket_basket_items';
+    public $table = 'lbaig_basket_discounts';
 
     /**
      * @var array Guarded fields
@@ -22,11 +22,7 @@ class BasketItem extends Model
     /**
      * @var array Fillable fields
      */
-    protected $fillable = [
-        'basket_id',
-        'product_id',
-        'quantity'
-    ];
+    protected $fillable = [];
 
     /**
      * @var array Validation rules for attributes
@@ -46,9 +42,7 @@ class BasketItem extends Model
     /**
      * @var array Attributes to be appended to the API representation of the model (ex. toArray())
      */
-    protected $appends = [
-        'productPrice'
-    ];
+    protected $appends = [];
 
     /**
      * @var array Attributes to be removed from the API representation of the model (ex. toArray())
@@ -69,29 +63,37 @@ class BasketItem extends Model
     public $hasOne = [];
     public $hasMany = [];
     public $belongsTo = [
-        'basket' => 'Lbaig\Basket\Models\Basket',
         'product' => 'Lbaig\Catalog\Models\Product'
     ];
-    public $belongsToMany = [
-        'propertyOptions' => ['Lbaig\Catalog\Models\PropertyOption',
-                              'table' => 'basket_item_property_option']
-    ];
+    public $belongsToMany = [];
     public $morphTo = [];
     public $morphOne = [];
     public $morphMany = [];
     public $attachOne = [];
     public $attachMany = [];
 
-
-    public function getProductPriceAttribute()
+    public function filterFields($fields, $context = null)
     {
-        $price = $this->product->price;
-        foreach ($this->propertyOptions as $option) {
-            $price += $option->price;
+        \Log::info('Discount::filterFields');
+        if ($this->product_id) {
+            $this->load('product');
+            $fields->amount->config['max'] = $this->product->price;
         }
-        foreach ($this->product->currentDiscounts() as $discount) {
-            $price -=  $discount->amountOff;
-        }
-        return $price;
+    }
+
+    public function getAmountOffAttribute($value)
+    {
+        return $this->is_fixed ? $this->amount :
+            ($this->percent * $this->product->price) / 100;
+    }
+
+    public function getOrdersCountAttribute()
+    {
+        return Order::whereHas('items', function ($query) {
+            $query->where('product_id', $this->product_id);
+        })
+            ->where('created_at', '>=', $this->since)
+            ->where('created_at', '<', $this->until)
+            ->count();
     }
 }

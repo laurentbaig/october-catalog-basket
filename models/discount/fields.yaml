@@ -1,0 +1,73 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    id:
+        label: ID
+        disabled: true
+    active:
+        label: Active
+        type: switch
+        span: left
+        default: true
+    _discount_type:
+        label: Discount type
+        type: dropdown
+        options:
+            product: Product discount
+            order: Order discount
+    product:
+        label: Product
+        type: relation
+        nameFrom: nameCategory
+        default: null
+        emptyOption: None
+        trigger:
+            action: show
+            field: _discount_type
+            condition: value[product]
+    is_fixed:
+        label: Fixed discount
+        type: checkbox
+        span: left
+        default: false
+    amount:
+        label: Fixed Order Amount
+        type: partial
+        path: ~/plugins/lbaig/basket/models/discount/_amount_field.htm
+        span: right
+        default: 0
+        min: 0
+        max: 100
+        trigger:
+            action: show
+            field: is_fixed
+            condition: checked
+        dependsOn: product
+    percent:
+        label: Percent order discount
+        type: partial
+        path: ~/plugins/lbaig/basket/models/discount/_amount_field.htm
+        span: right
+        default: 0
+        # type: number
+        # format: %.0f
+        min: 0
+        max: 100
+        trigger:
+            action: show
+            field: is_fixed
+            condition: unchecked
+    since:
+        label: From
+        type: datepicker
+        mode: datetime
+        ignoreTimezone: true
+        default: today
+    until:
+        label: Until
+        type: datepicker
+        mode: datetime
+        ignoreTimezone: true
+        default: tomorrow

@@ -9,3 +9,6 @@
 1.0.2:
   - Add line item price to store price at time of purchase
   - update_basket_items_add_line_price.php
+1.0.3:
+  - Add discounts model
+  - create_discounts_table.php

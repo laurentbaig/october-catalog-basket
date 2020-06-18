@@ -1,0 +1,13 @@
+<!-- Number -->
+<input type="number"
+       step="any"
+       name="Discount[<?= $field->fieldName ?>]"
+       id="Form-field-Discount-<?= $field->fieldName ?>"
+       value="<?= $field->value ?>"
+       placeholder=""
+       class="form-control"
+       autocomplete="off"
+       min="0"
+       max="<?= $field->config['max'] ?>"
+       pattern="-?\d+(\.\d+)?"
+       maxlength="255">

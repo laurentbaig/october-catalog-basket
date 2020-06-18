@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Discount
+
+# Model Form Field configuration
+form: $/lbaig/basket/models/discount/fields.yaml
+
+# Model Class name
+modelClass: Lbaig\Basket\Models\Discount
+
+# Default redirect location
+defaultRedirect: lbaig/basket/discounts
+
+# Create page
+create:
+    title: Create Discount
+    redirect: lbaig/basket/discounts/update/:id
+    redirectClose: lbaig/basket/discounts
+
+# Update page
+update:
+    title: Edit Discount
+    redirect: lbaig/basket/discounts
+    redirectClose: lbaig/basket/discounts
+
+# Preview page
+preview:
+    title: Preview Discount

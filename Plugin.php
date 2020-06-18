@@ -1,6 +1,7 @@
 <?php namespace Lbaig\Basket;
 
 use Backend;
+use Carbon\Carbon;
 use Event;
 use Lbaig\Catalog\Models\Product;
 use System\Classes\PluginBase;
@@ -42,9 +43,18 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
+        \Log::info('Basket boot');
         // add the basket item relation to produts
         Product::extend(function ($model) {
             $model->hasMany['basketItems'] = 'Lbaig\Basket\Models\BasketItem';
+            $model->hasMany['discounts'] = 'Lbaig\Basket\Models\Discount';
+            $model->addDynamicMethod('currentDiscounts', function () use ($model) {
+                $now = Carbon::now();
+                return Models\Discount::where('product_id', $model->id)
+                    ->where('since', '<=', $now)
+                    ->where('until', '>', $now)
+                    ->get();
+            });
         });
 
         // extend product list to include # of orders it has
@@ -61,6 +71,19 @@ class Plugin extends PluginBase
                     'align' => 'right'
                 ],
             ]);
+        });
+
+        Event::listen('backend.menu.extendItems', function($manager) {
+
+            $manager->addSideMenuItems('Lbaig.Catalog', 'catalog', [
+                'discounts' => [
+                    'label' => 'Discounts',
+                    'icon' => 'icon-book',
+                    'url' => Backend::url('lbaig/basket/discounts'),
+                    'permissions' => ['lbaig.basket.some_permission']
+                ]
+            ]);
+
         });
     }
 
