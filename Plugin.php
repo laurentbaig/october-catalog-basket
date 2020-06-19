@@ -43,7 +43,6 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
-        \Log::info('Basket boot');
         // add the basket item relation to produts
         Product::extend(function ($model) {
             $model->hasMany['basketItems'] = 'Lbaig\Basket\Models\BasketItem';
@@ -80,7 +79,7 @@ class Plugin extends PluginBase
                     'label' => 'Discounts',
                     'icon' => 'icon-book',
                     'url' => Backend::url('lbaig/basket/discounts'),
-                    'permissions' => ['lbaig.basket.some_permission']
+                    'permissions' => ['lbaig.catalog.some_permission']
                 ]
             ]);
 
