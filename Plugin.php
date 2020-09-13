@@ -4,6 +4,7 @@ use Backend;
 use Carbon\Carbon;
 use Event;
 use Lbaig\Catalog\Models\Product;
+use Rainlab\User\Models\User;
 use System\Classes\PluginBase;
 
 /**
@@ -43,6 +44,11 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
+        // add orders to user
+        User::extend(function ($model) {
+            $model->hasMany['orders'] = 'Lbaig\Basket\Models\Order';
+        });
+        
         // add the basket item relation to produts
         Product::extend(function ($model) {
             $model->hasMany['basketItems'] = 'Lbaig\Basket\Models\BasketItem';
@@ -96,6 +102,7 @@ class Plugin extends PluginBase
         return [
             'Lbaig\Basket\Components\Basket' => 'Basket',
             'Lbaig\Basket\Components\Order' => 'Order',
+            'Lbaig\Basket\Components\OrderHistory' => 'OrderHistory',
         ];
     }
 

@@ -1,0 +1,23 @@
+{% if __SELF__.orders|length > 0 %}
+<table class="w-full border-collapse">
+    <tr class="border">
+	<th>Date</th>
+	<th>Status</th>
+	<th>Email</th>
+	<th>Address</th>
+	<th>Phone</th>
+	<th>Total</th>
+    </tr>
+{% for order in __SELF__.orders %}
+    <tr class="border">
+	<td>{{ order.created_at|date('Y-m-d') }}</td>
+	<td>{{ order.status }}</td>
+	<td>{{ order.email }}</td>
+	<td>{{ order.address.street }}</td>
+	<td>{{ order.phone }}</td>
+	<td>{{ order.total }}</td>
+    </tr>
+
+{% endfor %}
+</table>
+{% endif %}

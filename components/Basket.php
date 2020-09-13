@@ -1,6 +1,7 @@
 <?php namespace Lbaig\Basket\Components;
 
 use Cms\Classes\ComponentBase;
+use Lbaig\Basket\Classes\BasketFacade;
 use Lbaig\Basket\Models\Basket as BasketModel;
 use Lbaig\Basket\Models\BasketItem;
 use Lbaig\Basket\Models\Settings;
@@ -25,12 +26,14 @@ class Basket extends ComponentBase
 
     public function get()
     {
-        $basket = BasketModel::where('session_id', Session::getId())->first();
+        // $basket = BasketModel::where('session_id', Session::getId())->first();
+        $basket = BasketFacade::get();
         return $basket;
     }
     
     public function getTotalQuantity()
     {
+        /*
         $quantity = 0;
         $basket = BasketModel::where('session_id', Session::getId())->first();
         if (!$basket) {
@@ -40,6 +43,8 @@ class Basket extends ComponentBase
         foreach ($basket->items as $item) {
             $quantity += $item->quantity;
         }
+        */
+        $quantity = BasketFacade::numberItems();
 
         return $quantity;
     }
@@ -47,6 +52,7 @@ class Basket extends ComponentBase
     public function getBasketSubtotal()
     {
         \Log::info('getBasketSubtotal');
+        /*
         $subtotal = 0;
         $basket = BasketModel::where('session_id', Session::getId())->first();
         if (!$basket) {
@@ -56,12 +62,16 @@ class Basket extends ComponentBase
         foreach ($basket->items as $item) {
             $subtotal += $item->quantity * $this->getItemPriceWithOptions($item);
         }
+        */
+        $subtotal = BasketFacade::subtotal();
+
         return $subtotal;
     }
 
     public function getTaxable()
     {
         \Log::info('getTaxable');
+        /*
         $taxable = 0;
         $basket = BasketModel::where('session_id', Session::getId())->first();
         if (!$basket) {
@@ -79,18 +89,14 @@ class Basket extends ComponentBase
         if (Settings::get('is_tax_origin_based')) {
             $tax_amount = floor(Settings::get('origin_based_tax') * $taxable) / 100;
         }
+        */
+
+        $tax_amount = BasketFacade::tax();
         return $tax_amount;
     }
     
     public function getItemPriceWithOptions(BasketItem $item)
     {
-        /*
-        $price = $item->product->price;
-        foreach ($item->propertyOptions as $option) {
-            $price += $option->price;
-        }
-        return $price;
-        */
         return $item->productPrice;
     }
     
@@ -99,13 +105,15 @@ class Basket extends ComponentBase
         $basket_items = Input::get('basket');
 
         // TODO: Add search for user basket
-        $basket = BasketModel::where('session_id', Session::getId())->first();
+        // $basket = BasketModel::where('session_id', Session::getId())->first();
+        $basket = BasketFacade::get();
         if (!$basket) {
             \Log::info('Create new basket');
             // create the basket for the session
-            $basket = BasketModel::create([
-                'session_id' => Session::getId()
-            ]);
+            // $basket = BasketModel::create([
+            //     'session_id' => Session::getId()
+            // ]);
+            $basket = BasketFacade::create();
         }
 
         // now we have a basket. add the item to the basket
@@ -160,6 +168,12 @@ class Basket extends ComponentBase
                 $item->delete();
             }
         }
+    }
+
+    public function onRun()
+    {
+        \Log::info('Basket::onRun');
+        //$this->addJs('/plugins/lbaig/basket/assets/javascript/basket.js');
     }
 }
 

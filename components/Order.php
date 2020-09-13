@@ -1,10 +1,12 @@
 <?php namespace Lbaig\Basket\Components;
 
+use Auth;
 use Cms\Classes\ComponentBase;
 use Input;
 use Lbaig\Basket\Models\Address as AddressModel;
 use Lbaig\Basket\Models\Basket as BasketModel;
 use Lbaig\Basket\Models\Order as OrderModel;
+use Mail;
 use Session;
 
 
@@ -25,39 +27,42 @@ class Order extends ComponentBase
 
     public function onCreate()
     {
-        \Log::info(Input::all());
-        
-        /*
-        $order = Input::get('order');
-        $shipping_address = $order['shipping_address'];
+        \Log::info('Order::onCreate');
+        $orderIn = input('order');
+        \Log::info($orderIn);
 
-        \Log::info($shipping_address);
+        // create the shipping model
+        $shipping_address = $orderIn['shipping_address'];
         $shipping = AddressModel::create($shipping_address);
 
-        $basket = BasketModel::where('session_id', Session::getId())->first();
-        $order = OrderModel::create([
+        $orderModelData = [
             'address_id' => $shipping->id,
-            'payment_id' => $order['payment_method_id'],
-            'email' => $order['email'],
-            'phone' => $order['phone'],
-        ]);
+            'payment_id' => $orderIn['payment_method_id'],
+            'email' => $orderIn['email'],
+            'phone' => $orderIn['phone'],
+            'subtotal' => $orderIn['subtotal'],
+            'tax' => $orderIn['tax_amount'],
+            'shipping' => 0,
+            'total' => $orderIn['total_price']
+        ];
 
-        $subtotal = 0;
+        if (Auth::check()) {
+            $user = Auth::getUser();
+            $orderModalData['user_id'] = $user->id;
+        }
+
+        
+        // create the order model
+        $order = OrderModel::create($orderModelData);
+
+        // reassign items from the basket to the order
+        $basket = BasketModel::where('id', $orderIn['basket_id'])->firstOrFail();
         foreach ($basket->items as $item) {
             $item->order_id = $order->id;
             $item->basket_id = null;
+            $item->line_price = $item->productPrice;
             $item->save();
-            $subtotal += $item->quantity * $item->productPrice;
         }
-
-        $order->subtotal = $subtotal;
-        $order->tax = 0;
-        $order->shipping = 0;
-        
-        $order->total = $order->subtotal +
-                      $order->tax +
-                      $order->shipping;
-        $order->save();
 
         // send confirmation of order email
         $vars = [
@@ -66,24 +71,20 @@ class Order extends ComponentBase
             'items' => []
         ];
     
-        $total = 0.0;
         foreach ($order->items as $item) {
             $detail = [
                 'name' => $item->product->name,
                 'options' => $item->propertyOptions,
                 'quantity' => $item->quantity,
-                'unit_price' => number_format($item->productPrice, 2),
-                'line_price' => number_format($item->quantity * $item->productPrice, 2)
+                'unit_price' => number_format($item->line_price, 2),
+                'line_price' => number_format($item->quantity * $item->line_price, 2)
             ];
             $vars['items'][] = $detail;
-            $total = $total + $detail['line_price'];
         }
-        $vars['total'] = number_format($total, 2);
+        $vars['total'] = $order->total;
 
-        Mail::send('order::mail.thank-you', $vars, function ($msg) {
-            $msg->to('ljb0904@gmail.com');
+        Mail::send('order::mail.thank-you', $vars, function ($msg) use ($order) {
+            $msg->to($order->email);
         });
-        */
-
     }
 }
