@@ -104,6 +104,8 @@ class Basket extends ComponentBase
     {
         $basket_items = Input::get('basket');
 
+        // \Log::info($basket_items);
+
         // TODO: Add search for user basket
         // $basket = BasketModel::where('session_id', Session::getId())->first();
         $basket = BasketFacade::get();
@@ -127,10 +129,12 @@ class Basket extends ComponentBase
                 'product_id' => $basket_item['product_id'],
             ]);
             // condition on the query by the property options
-            foreach ($basket_item['properties'] as $propid) {
-                $query->whereHas('propertyOptions', function ($q) use ($propid) {
-                    $q->where('lbaig_catalog_property_options.id', $propid);
-                });
+            if (array_key_exists('properties', $basket_item)) {
+                foreach ($basket_item['properties'] as $propid) {
+                    $query->whereHas('propertyOptions', function ($q) use ($propid) {
+                        $q->where('lbaig_catalog_property_options.id', $propid);
+                    });
+                }
             }
             $item = $query->first();
             if ($item) {
@@ -142,7 +146,9 @@ class Basket extends ComponentBase
                     'product_id' => $basket_item['product_id'],
                     'quantity' => $basket_item['quantity']
                 ]);
-                $item->propertyOptions()->sync($basket_item['properties']);
+                if (array_key_exists('properties', $basket_item)) {
+                    $item->propertyOptions()->sync($basket_item['properties']);
+                }
             }
         }
     }
