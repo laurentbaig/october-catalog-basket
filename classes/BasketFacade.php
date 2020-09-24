@@ -3,6 +3,7 @@
 use Auth;
 use Lbaig\Basket\Models\Basket;
 use Lbaig\Basket\Models\Settings;
+use Session;
 
 
 class BasketFacade
@@ -15,7 +16,7 @@ class BasketFacade
             $basket = Basket::where('user_id', $user->id)->first();
         }
         else {
-            $basket = Basket::where('session_id', Sesssion::getId())->first();
+            $basket = Basket::where('session_id', Session::getId())->first();
         }
 
         return $basket;
