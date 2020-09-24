@@ -29,7 +29,7 @@ class BasketFacade
             $basket = Basket::firstOrCreate(['user_id' => $user->id]);
         }
         else {
-            $basket = Basket::firstOrCreate(['session_id' => Sesssion::getId()]);
+            $basket = Basket::firstOrCreate(['session_id' => Session::getId()]);
         }
 
         return $basket;
