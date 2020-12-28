@@ -1,0 +1,22 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    id:
+        label: ID
+        disabled: true
+    is_active:
+        label: Active
+        type: switch
+        default: true
+    code:
+        label: Code
+        type: text
+    name:
+        label: Name
+        type: text
+    shipping:
+        label: Shipping Surcharge
+        type: number
+        format: "%.2f"

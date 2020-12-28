@@ -89,6 +89,15 @@ class Plugin extends PluginBase
                 ]
             ]);
 
+            $manager->addSideMenuItems('Lbaig.Catalog', 'catalog', [
+                'countries' => [
+                    'label' => 'Countries',
+                    'icon' => 'icon-globe',
+                    'url' => Backend::url('lbaig/basket/countries'),
+                    'permissions' => ['lbaig.catalog.some_permission']
+                ]
+            ]);
+
         });
     }
 
@@ -101,6 +110,7 @@ class Plugin extends PluginBase
     {
         return [
             'Lbaig\Basket\Components\Basket' => 'Basket',
+            'Lbaig\Basket\Components\Countries' => 'Countries',
             'Lbaig\Basket\Components\Order' => 'Order',
             'Lbaig\Basket\Components\OrderHistory' => 'OrderHistory',
         ];

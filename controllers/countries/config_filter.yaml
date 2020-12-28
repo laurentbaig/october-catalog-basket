@@ -1,0 +1,10 @@
+# ===================================
+# Filter Scope Definitions
+# ===================================
+
+scopes:
+
+    is_active:
+        label: Active
+        type: checkbox
+        conditions: is_active=true

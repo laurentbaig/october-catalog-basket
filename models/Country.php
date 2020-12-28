@@ -3,16 +3,16 @@
 use Model;
 
 /**
- * Address Model
+ * Country Model
  */
-class Address extends Model
+class Country extends Model
 {
     use \October\Rain\Database\Traits\Validation;
 
     /**
      * @var string The database table used by the model.
      */
-    public $table = 'lbaig_basket_addresses';
+    public $table = 'lbaig_basket_countries';
 
     /**
      * @var array Guarded fields
@@ -22,16 +22,7 @@ class Address extends Model
     /**
      * @var array Fillable fields
      */
-    protected $fillable = [
-        'addressee',
-        'company',
-        'street',
-        'district',
-        'city',
-        'state',
-        'postcode',
-        'country_id'
-    ];
+    protected $fillable = [];
 
     /**
      * @var array Validation rules for attributes
@@ -70,7 +61,11 @@ class Address extends Model
      * @var array Relations
      */
     public $hasOne = [];
-    public $hasMany = [];
+    public $hasMany = [
+        'states' => 'Lbaig\Basket\Models\State'
+    ];
+    public $hasOneThrough = [];
+    public $hasManyThrough = [];
     public $belongsTo = [];
     public $belongsToMany = [];
     public $morphTo = [];
@@ -78,4 +73,8 @@ class Address extends Model
     public $morphMany = [];
     public $attachOne = [];
     public $attachMany = [];
+
+    public function scopeActive($query) {
+        $query->where('is_active', 1);
+    }
 }

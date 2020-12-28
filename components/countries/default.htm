@@ -1,0 +1,5 @@
+<select id="countries">
+    {% for item in __SELF__.countries %}
+    <option value="{{ item.id }}">{{ item.name }} - ${{ item.shipping }}</option>
+    {% endfor %}
+</select>

@@ -12,3 +12,7 @@
 1.0.3:
   - Add discounts model
   - create_discounts_table.php
+1.0.4:
+  - Add countries model for shipping values
+  - create_countries_table.php
+  - create_states_table.php

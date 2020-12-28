@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Country
+
+# Model Form Field configuration
+form: $/lbaig/basket/models/country/fields.yaml
+
+# Model Class name
+modelClass: Lbaig\Basket\Models\Country
+
+# Default redirect location
+defaultRedirect: lbaig/basket/countries
+
+# Create page
+create:
+    title: Create Country
+    redirect: lbaig/basket/countries/update/:id
+    redirectClose: lbaig/basket/countries
+
+# Update page
+update:
+    title: Edit Country
+    redirect: lbaig/basket/countries
+    redirectClose: lbaig/basket/countries
+
+# Preview page
+preview:
+    title: Preview Country

@@ -5,6 +5,7 @@ use Cms\Classes\ComponentBase;
 use Input;
 use Lbaig\Basket\Models\Address as AddressModel;
 use Lbaig\Basket\Models\Basket as BasketModel;
+use Lbaig\Basket\Models\Country;
 use Lbaig\Basket\Models\Order as OrderModel;
 use Mail;
 use Session;
@@ -12,6 +13,8 @@ use Session;
 
 class Order extends ComponentBase
 {
+    // public $country_id = 1;
+    
     public function componentDetails()
     {
         return [
@@ -23,6 +26,12 @@ class Order extends ComponentBase
     public function defineProperties()
     {
         return [];
+    }
+
+    public function onUpdate()
+    {
+        \Log::info(request());
+        $this->country_id = request('country_id', 1);
     }
 
     public function onCreate()
@@ -42,16 +51,15 @@ class Order extends ComponentBase
             'phone' => $orderIn['phone'],
             'subtotal' => $orderIn['subtotal'],
             'tax' => $orderIn['tax_amount'],
-            'shipping' => 0,
+            'shipping' => $orderIn['shipping'],
             'total' => $orderIn['total_price']
         ];
 
         if (Auth::check()) {
             $user = Auth::getUser();
-            $orderModalData['user_id'] = $user->id;
+            $orderModelData['user_id'] = $user->id;
         }
 
-        
         // create the order model
         $order = OrderModel::create($orderModelData);
 
@@ -86,5 +94,13 @@ class Order extends ComponentBase
         Mail::send('order::mail.thank-you', $vars, function ($msg) use ($order) {
             $msg->to($order->email);
         });
+    }
+
+    public function shipping($country_id)
+    {
+        //$country_id = $this->country_id;
+        \Log::info("shipping: country_id = {$country_id}");
+
+        return Country::find($country_id)->shipping;
     }
 }

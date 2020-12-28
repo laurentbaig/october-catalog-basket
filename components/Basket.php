@@ -33,17 +33,6 @@ class Basket extends ComponentBase
     
     public function getTotalQuantity()
     {
-        /*
-        $quantity = 0;
-        $basket = BasketModel::where('session_id', Session::getId())->first();
-        if (!$basket) {
-            return $quantity;
-        }
-
-        foreach ($basket->items as $item) {
-            $quantity += $item->quantity;
-        }
-        */
         $quantity = BasketFacade::numberItems();
 
         return $quantity;
@@ -52,17 +41,6 @@ class Basket extends ComponentBase
     public function getBasketSubtotal()
     {
         \Log::info('getBasketSubtotal');
-        /*
-        $subtotal = 0;
-        $basket = BasketModel::where('session_id', Session::getId())->first();
-        if (!$basket) {
-            return $subtotal;
-        }
-
-        foreach ($basket->items as $item) {
-            $subtotal += $item->quantity * $this->getItemPriceWithOptions($item);
-        }
-        */
         $subtotal = BasketFacade::subtotal();
 
         return $subtotal;
@@ -71,26 +49,6 @@ class Basket extends ComponentBase
     public function getTaxable()
     {
         \Log::info('getTaxable');
-        /*
-        $taxable = 0;
-        $basket = BasketModel::where('session_id', Session::getId())->first();
-        if (!$basket) {
-            return $taxable;
-        }
-
-        foreach ($basket->items as $item) {
-            \Log::info($item->product);
-            if ($item->product->taxable) {
-                $taxable += $item->quantity * $this->getItemPriceWithOptions($item);
-            }
-        }
-
-        $tax_amount = 0.0;
-        if (Settings::get('is_tax_origin_based')) {
-            $tax_amount = floor(Settings::get('origin_based_tax') * $taxable) / 100;
-        }
-        */
-
         $tax_amount = BasketFacade::tax();
         return $tax_amount;
     }
@@ -104,26 +62,16 @@ class Basket extends ComponentBase
     {
         $basket_items = Input::get('basket');
 
-        // \Log::info($basket_items);
-
         // TODO: Add search for user basket
-        // $basket = BasketModel::where('session_id', Session::getId())->first();
         $basket = BasketFacade::get();
         if (!$basket) {
             \Log::info('Create new basket');
             // create the basket for the session
-            // $basket = BasketModel::create([
-            //     'session_id' => Session::getId()
-            // ]);
             $basket = BasketFacade::create();
         }
 
         // now we have a basket. add the item to the basket
         foreach ($basket_items as $basket_item) {
-            // $item = BasketItem::firstOrCreate([
-            //     'basket_id' => $basket->id,
-            //     'product_id' => $basket_item['product_id'],
-            // ])->increment('quantity', $basket_item['quantity']);
             $query = BasketItem::where([
                 'basket_id' => $basket->id,
                 'product_id' => $basket_item['product_id'],
@@ -179,7 +127,6 @@ class Basket extends ComponentBase
     public function onRun()
     {
         \Log::info('Basket::onRun');
-        //$this->addJs('/plugins/lbaig/basket/assets/javascript/basket.js');
     }
 }
 
