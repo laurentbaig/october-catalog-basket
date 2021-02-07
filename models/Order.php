@@ -27,6 +27,7 @@ class Order extends Model
         'payment_id',
         'email',
         'phone',
+        'discount',
         'shipping',
         'subtotal',
         'tax',

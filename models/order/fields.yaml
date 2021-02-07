@@ -37,8 +37,8 @@ fields:
         format: $%.2f
         readOnly: true
         span: right
-    total:
-        label: Total
+    discount:
+        label: Discount
         type: number
         format: $%.2f
         readOnly: true
@@ -49,6 +49,11 @@ fields:
         format: $%.2f
         readOnly: true
         span: right
+    total:
+        label: Total
+        type: number
+        format: $%.2f
+        readOnly: true
     address:
         label: Shipping Address
         type: partial

@@ -11,10 +11,15 @@ fields:
         type: switch
         span: left
         default: true
-    _discount_type:
+    name:
+        label: Name
+        type: text
+        default: Sale
+    discount_type:
         label: Discount type
         type: dropdown
         options:
+            category: Category discount
             product: Product discount
             order: Order discount
     product:
@@ -25,8 +30,18 @@ fields:
         emptyOption: None
         trigger:
             action: show
-            field: _discount_type
+            field: discount_type
             condition: value[product]
+    category:
+        label: Category
+        type: relation
+        nameFrom: name
+        default: null
+        emptyOption: None
+        trigger:
+            action: show
+            field: discount_type
+            condition: value[category]
     is_fixed:
         label: Fixed discount
         type: checkbox

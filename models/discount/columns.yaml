@@ -9,20 +9,24 @@ columns:
     active:
         label: Active
         type: switch
-    product:
-        label: Product
-        relation: product
-        select: name
-        searchable: true
+    name:
+        label: Name
+        type: text
+    discount_type:
+        label: Type
+        type: text
     amount:
         label: Amount
         type: number
+    percent:
+        label: Percent
+        type: number
     since:
         label: From
-        type: datetime
+        type: date
     until:
         label: Until
-        type: datetime
+        type: date
     ordersCount:
         label: Order Count
         type: number

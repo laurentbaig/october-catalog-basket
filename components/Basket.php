@@ -1,9 +1,11 @@
 <?php namespace Lbaig\Basket\Components;
 
+use Carbon\Carbon;
 use Cms\Classes\ComponentBase;
 use Lbaig\Basket\Classes\BasketFacade;
 use Lbaig\Basket\Models\Basket as BasketModel;
 use Lbaig\Basket\Models\BasketItem;
+use Lbaig\Basket\Models\Discount;
 use Lbaig\Basket\Models\Settings;
 use Input;
 use Session;
@@ -58,6 +60,14 @@ class Basket extends ComponentBase
         return $item->productPrice;
     }
     
+    public function getOrderDiscounts()
+    {
+        \Log::info('Basket::getOrderDiscounts');
+        $amount = 0.0;
+        
+        return BasketFacade::orderDiscounts();
+    }
+
     public function onAdd()
     {
         $basket_items = Input::get('basket');

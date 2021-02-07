@@ -9,6 +9,8 @@ class BasketItem extends Model
 {
     use \October\Rain\Database\Traits\Validation;
 
+    protected $discount;
+            
     /**
      * @var string The database table used by the model.
      */
@@ -89,9 +91,31 @@ class BasketItem extends Model
         foreach ($this->propertyOptions as $option) {
             $price += $option->price;
         }
-        foreach ($this->product->currentDiscounts() as $discount) {
-            $price -=  $discount->amountOff;
+        if (!isset($this->discount)) {
+            $this->computeDiscountAmount();
         }
+        $price -= $this->discount;
+
         return $price;
+    }
+
+    public function getIsDiscountedAttribute()
+    {
+        if (!isset($this->discount)) {
+            $this->computeDiscountAmount();
+        }
+        return $this->discount != 0;
+    }
+
+    protected function computeDiscountAmount()
+    {
+        $amount = 0.0;
+        foreach ($this->product->currentDiscounts() as $discount) {
+            $amount +=  $discount->amountOff;
+        }
+        foreach ($this->product->categoryDiscounts() as $discount) {
+            $amount +=  $discount->categoryProductAmountOff($this->product);
+        }
+        $this->discount = $amount;
     }
 }

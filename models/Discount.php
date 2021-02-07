@@ -63,6 +63,7 @@ class Discount extends Model
     public $hasOne = [];
     public $hasMany = [];
     public $belongsTo = [
+        'category' => 'Lbaig\Catalog\Models\Category',
         'product' => 'Lbaig\Catalog\Models\Product'
     ];
     public $belongsToMany = [];
@@ -95,5 +96,16 @@ class Discount extends Model
             ->where('created_at', '>=', $this->since)
             ->where('created_at', '<', $this->until)
             ->count();
+    }
+
+    public function categoryProductAmountOff($product)
+    {
+        return $this->is_fixed ? $this->amount :
+            ($this->percent * $product->price) / 100.0;
+    }
+
+    public function scopeActive($query)
+    {
+        $query->where('active', 1);
     }
 }

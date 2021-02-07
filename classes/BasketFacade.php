@@ -1,7 +1,9 @@
 <?php namespace Lbaig\Basket\Classes;
 
 use Auth;
+use Carbon\Carbon;
 use Lbaig\Basket\Models\Basket;
+use Lbaig\Basket\Models\Discount;
 use Lbaig\Basket\Models\Settings;
 use Session;
 
@@ -83,17 +85,41 @@ class BasketFacade
         }
 
         foreach ($basket->items as $item) {
-            \Log::info($item->product);
             if ($item->product->taxable) {
                 $taxable += $item->quantity * $item->productPrice;
             }
         }
 
+        // apply order discounts to taxable amount
+        $taxable -= self::orderDiscounts($basket);
+        
         $tax_amount = 0.0;
         if (Settings::get('is_tax_origin_based')) {
             $tax_amount = floor(Settings::get('origin_based_tax') * $taxable) / 100;
         }
         
         return $tax_amount;
+    }
+
+    public static function orderDiscounts($basket = null)
+    {
+        if (!$basket) {
+            $basket = BasketFacade::get();
+        }
+
+        $amount = 0.0;
+        
+        $now = Carbon::now();
+        $discounts = Discount::active()
+                   ->where('discount_type', 'order')
+                   ->where('since', '<=', $now)
+                   ->where('until', '>', $now)
+                   ->get();
+
+        foreach ($discounts as $discount) {
+            $amount += $discount->is_fixed ? $discount->amount :
+                     self::subtotal() * $discount->percent / 100;
+        }
+        return $amount;
     }
 }

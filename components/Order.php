@@ -50,6 +50,7 @@ class Order extends ComponentBase
             'email' => $orderIn['email'],
             'phone' => $orderIn['phone'],
             'subtotal' => $orderIn['subtotal'],
+            'discount' => $orderIn['discount'],
             'tax' => $orderIn['tax_amount'],
             'shipping' => $orderIn['shipping'],
             'total' => $orderIn['total_price']
@@ -98,9 +99,13 @@ class Order extends ComponentBase
 
     public function shipping($country_id)
     {
-        //$country_id = $this->country_id;
         \Log::info("shipping: country_id = {$country_id}");
+        $country = Country::find($country_id);
 
-        return Country::find($country_id)->shipping;
+        if ($country) {
+            return $country->shipping;
+        }
+
+        return 20.00;
     }
 }

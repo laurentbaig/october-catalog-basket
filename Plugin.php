@@ -55,9 +55,23 @@ class Plugin extends PluginBase
             $model->hasMany['discounts'] = 'Lbaig\Basket\Models\Discount';
             $model->addDynamicMethod('currentDiscounts', function () use ($model) {
                 $now = Carbon::now();
-                return Models\Discount::where('product_id', $model->id)
+                return Models\Discount::active()
+                    ->where('product_id', $model->id)
                     ->where('since', '<=', $now)
                     ->where('until', '>', $now)
+                    ->get();
+            });
+            $model->addDynamicMethod('categoryDiscounts', function () use ($model) {
+                $now = Carbon::now();
+                $mcat = $model->category;
+                return Models\Discount::active()
+                    ->where('discount_type', 'category')
+                    ->where('since', '<=', $now)
+                    ->where('until', '>', $now)
+                    ->whereHas('category', function ($query) use ($mcat) {
+                        $query->where('nest_left', '>=', $mcat->nest_left)
+                              ->where('nest_right', '<=', $mcat->nest_right);
+                    })
                     ->get();
             });
         });
