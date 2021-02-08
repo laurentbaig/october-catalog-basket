@@ -27,6 +27,3 @@ columns:
     until:
         label: Until
         type: date
-    ordersCount:
-        label: Order Count
-        type: number
