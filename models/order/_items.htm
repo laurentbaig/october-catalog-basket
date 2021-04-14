@@ -16,7 +16,7 @@
 			<td><?= $item->product_id; ?></td>
 			<td class="image-cell">
 				<?php if ($item->product->preview_image): ?>
-				<img src="<?= $item->product->preview_image->getThumb(160,160) ?>">
+				<img src="<?= $item->product->preview_image->getThumb($thumbsize, $thumbsize) ?>">
 				<?php endif; ?>
 			</td>
 			<td>
