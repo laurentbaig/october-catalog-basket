@@ -42,7 +42,6 @@ class Basket extends ComponentBase
 
     public function getBasketSubtotal()
     {
-        \Log::info('getBasketSubtotal');
         $subtotal = BasketFacade::subtotal();
 
         return $subtotal;
@@ -50,7 +49,6 @@ class Basket extends ComponentBase
 
     public function getTaxable()
     {
-        \Log::info('getTaxable');
         $tax_amount = BasketFacade::tax();
         return $tax_amount;
     }
@@ -62,9 +60,6 @@ class Basket extends ComponentBase
     
     public function getOrderDiscounts()
     {
-        \Log::info('Basket::getOrderDiscounts');
-        $amount = 0.0;
-        
         return BasketFacade::orderDiscounts();
     }
 
@@ -75,7 +70,7 @@ class Basket extends ComponentBase
         // TODO: Add search for user basket
         $basket = BasketFacade::get();
         if (!$basket) {
-            \Log::info('Create new basket');
+            \Log::info('Creating new basket');
             // create the basket for the session
             $basket = BasketFacade::create();
         }
@@ -117,8 +112,13 @@ class Basket extends ComponentBase
 
         foreach ($basket_items as $item) {
             $basketItem = BasketItem::find($item['basket_item_id']);
-            $basketItem->quantity = $item['quantity'];
-            $basketItem->save();
+            if ($basketItem) {
+                $basketItem->quantity = $item['quantity'];
+                $basketItem->save();
+            } else {
+                \Log::error("Failed to find a basket item {$item['basket_item_id']}");
+                \Log::error($basket_items);
+            }
         }
     }
 
@@ -136,7 +136,6 @@ class Basket extends ComponentBase
 
     public function onRun()
     {
-        \Log::info('Basket::onRun');
     }
 }
 

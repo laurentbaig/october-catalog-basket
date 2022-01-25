@@ -34,6 +34,20 @@ class Order extends ComponentBase
         $this->country_id = request('country_id', 1);
     }
 
+    public function onPaypalError()
+    {
+        \Log::info('Order::onPaypalError');
+        $response = input('response');
+        \Log::info($response);
+    }
+
+    public function onBeforeCreateOrder()
+    {
+        \Log::info('Order::onBeforeCreateOrder');
+        $orderIn = input('order');
+        \Log::info($orderIn);
+    }
+
     public function onCreate()
     {
         \Log::info('Order::onCreate');
