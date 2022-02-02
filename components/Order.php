@@ -37,7 +37,7 @@ class Order extends ComponentBase
     public function onPaypalSuccess()
     {
         \Log::info('Order::onPaypalSuccess');
-        \Log::info(input('response'));
+        \Log::info(input('details'));
     
     }
 
